@@ -1,29 +1,29 @@
 import { callApi  } from '../helpers/apiHelper';
 
 class FighterService {
-    async getFighters() {
-      try {
-        const endpoint = 'fighters.json';
-        const apiResult = await callApi(endpoint, 'GET');
-  
-        return JSON.parse(atob(apiResult.content));
-      } catch (error) {
-        throw error;
-      }
+  async getFighters() {
+    try {
+      const endpoint = 'fighters.json';
+      const apiResult = await callApi(endpoint);
 
-    }
-
-    async getFighterDetails(_id) {
-      try {
-        const endpoint = `details/fighter/${_id}.json`;
-        const apiResult = await callApi(endpoint, 'GET');
-  
-        return JSON.parse(atob(apiResult.content));
-      } catch (error) {
-        throw error;
-      }
+      return JSON.parse(atob(apiResult.content));
+    } catch (error) {
+      throw error;
     }
 
   }
 
-  export const fighterService = new FighterService(); 
+  async getFighterDetails(_id) {
+    try {
+      const endpoint = `details/fighter/${_id}.json`;
+      const apiResult = await callApi(endpoint);
+
+      return JSON.parse(atob(apiResult.content));
+    } catch (error) {
+      throw error;
+    }
+  }
+
+}
+
+export const fighterService = new FighterService();
