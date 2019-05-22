@@ -1,5 +1,7 @@
-stage-2-es6-for-everyone
+good-old-street-fighters 
+
 Instalation
+
 npm install
 
 npm run build
