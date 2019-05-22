@@ -1,6 +1,6 @@
-good-old-street-fighters 
+Good old Street-Fighters 
 
-Instalation
+Installation
 
 npm install
 

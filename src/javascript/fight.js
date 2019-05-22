@@ -7,18 +7,16 @@ function fight(p1, p2) {
     const punchPower1 = Math.max(0, p1.getHitPower() - p2.getBlockPower());
     const punchPower2 = Math.max(0, p2.getHitPower() - p1.getBlockPower());
     healthP2 -= punchPower1;
-    fightLog += `${p1.name} 🤜 ${p2.name}  with 💪 ${punchPower1}. ${p2.name} ❤️ ${healthP2}
-    `;
+    fightLog += `<p>${p1.name} 🤜 ${p2.name}  with 💪 ${punchPower1}. ${p2.name} ❤️ ${healthP2} <br>`;
     if (healthP2 > 0) {
       healthP1 -= punchPower2;
-      fightLog += `${p2.name} 🤜 ${p1.name} with 💪 ${punchPower2}. ${p1.name} ❤️ ${healthP1}
-    `;
+      fightLog += `${p2.name} 🤜 ${p1.name} with 💪 ${punchPower2}. ${p1.name} ❤️ ${healthP1} </p>`;
     }
   }
-  let winner = {};
-  winner = healthP1 > 0 ? p1 : p2;
-  winner.log = fightLog;
-  return winner;
+  let result = {};
+  result.winner = healthP1 > 0 ? p1 : p2;
+  result.log = fightLog;
+  return result;
 }
 
 export default fight;

@@ -26,6 +26,14 @@ class FightersView extends View {
       tagName: 'div',
       className: 'fighters-view'
     });
+
+    this.title = this.createElement({
+      tagName: 'h1',
+      className: 'title',
+    });
+    this.title.innerHTML = 'Player select';
+    this.element.append(this.title);
+
     this.fightersCollection = this.createElement({
       tagName: 'div',
       className: 'fighters'
@@ -37,7 +45,7 @@ class FightersView extends View {
 
     this.fightButton = this.createElement({
       tagName: 'button',
-      className: 'button',
+      className: 'wide-button',
       attributes: {style: 'visibility: hidden'},
     });
     this.fightButton.innerText = 'Start Fight';
@@ -47,7 +55,7 @@ class FightersView extends View {
   }
 
   async handleFighterClick(event, fighter) {
-    if (event.target.parentNode.matches('label.container')) {
+    if (event.target.parentNode.matches('label.checkbox-container')) {
       return;
     }
 
@@ -59,7 +67,7 @@ class FightersView extends View {
   }
 
   onFighterCheck(event) {
-    if (!event.target.parentNode.matches('label.container')) {
+    if (!event.target.parentNode.matches('label.checkbox-container')) {
       return;
     }
     let fighter = this.fighters.find(
@@ -104,7 +112,7 @@ class FightersView extends View {
     }
     await this.players[0].getDetails();
     await this.players[1].getDetails();
-    let winner = fight(...this.players);
+    let result = fight(...this.players);
     if (!this.winnerInfo) {
       this.winnerInfo = new Modal();
       this.element.append(this.winnerInfo.element);
@@ -116,11 +124,13 @@ class FightersView extends View {
         this.createElement({
           tagName: 'h3',
           className: 'winner-info',
-          html: `And the winner is: <span>${winner.name}</span>`,
+          html: `And the winner is: <span>${result.winner.name}</span>`,
         }));
     this.winnerInfo.details.append(this.createElement({
       tagName: 'details',
-      html: `<summary>See full fight details</summary> <pre>${winner.log}</pre>`}));
+      html: `<summary>See full fight details</summary> ${result.log}`,
+      attributes: {style: 'max-height: 50%'},
+    }));
     this.winnerInfo.show();
   }
 }

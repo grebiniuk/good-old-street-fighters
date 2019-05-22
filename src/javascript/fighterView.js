@@ -33,13 +33,12 @@ class FighterView extends View {
 
   createImage(source) {
     const attributes = { src: source };
-    const imgElement = this.createElement({
+
+    return this.createElement({
       tagName: 'img',
       className: 'fighter-image',
       attributes
     });
-
-    return imgElement;
   }
 
   createCheckbox(id) {
@@ -52,13 +51,13 @@ class FighterView extends View {
       tagName: 'span',
       className: 'checkmark',
     });
-    const container = this.createElement({
+    const checkboxContainer = this.createElement({
       tagName: 'label',
-      className: 'container',
+      className: 'checkbox-container',
     });
-    container.append(checkBoxElement, checkMark);
+    checkboxContainer.append(checkBoxElement, checkMark);
 
-    return container;
+    return checkboxContainer;
   }
 }
 

@@ -16,7 +16,7 @@ class Modal extends View {
     });
     const updateBtn = this.createElement({
       tagName: 'button',
-      className: 'button',
+      className: 'wide-button',
       text: 'Ok',
     });
     updateBtn.onclick = this.onUpdate.bind(this);
