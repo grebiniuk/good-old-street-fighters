@@ -1,9 +1,16 @@
 class View {
   element;
 
-  createElement({ tagName, className = '', attributes = {} }) {
+  createElement({ tagName, className = '', attributes = {}, html = '', text = '' }) {
     const element = document.createElement(tagName);
-    element.classList.add(className);
+    if (className) {
+      element.classList.add(className);
+    }
+    if (html) {
+      element.innerHTML = html;
+    } else if (text) {
+      element.innerText = text;
+    }
 
     Object.keys(attributes).forEach(key => element.setAttribute(key, attributes[key]));
 

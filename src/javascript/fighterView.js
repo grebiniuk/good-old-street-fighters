@@ -13,13 +13,19 @@ class FighterView extends View {
     const imageElement = this.createImage(source);
     const checkBoxElement = this.createCheckbox(_id);
 
-    this.element = this.createElement({ tagName: 'div', className: 'fighter' });
+    this.element = this.createElement({
+      tagName: 'div',
+      className: 'fighter',
+    });
     this.element.append(imageElement, nameElement, checkBoxElement);
     this.element.addEventListener('click', event => handleClick(event, fighter), false);
   }
 
   createName(name) {
-    const nameElement = this.createElement({ tagName: 'span', className: 'name' });
+    const nameElement = this.createElement({
+      tagName: 'span',
+      className: 'name'
+    });
     nameElement.innerText = name;
 
     return nameElement;
@@ -39,11 +45,20 @@ class FighterView extends View {
   createCheckbox(id) {
     const checkBoxElement = this.createElement({
       tagName: 'input',
-      className: 'fighter-image',
+      className: 'fighter-check',
       attributes: {type:"checkbox", value:id}
     });
+    const checkMark = this.createElement({
+      tagName: 'span',
+      className: 'checkmark',
+    });
+    const container = this.createElement({
+      tagName: 'label',
+      className: 'container',
+    });
+    container.append(checkBoxElement, checkMark);
 
-    return checkBoxElement;
+    return container;
   }
 }
 

@@ -14,7 +14,8 @@ class Fighter{
     return this.details;
   }
   setDetails(details) {
-    this.details = details;
+    console.log(details);
+    Object.assign(this.details, details);
   }
 
   getHitPower() {
