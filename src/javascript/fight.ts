@@ -1,7 +1,9 @@
-function fight(p1, p2) {
-  let healthP1 = p1.details.health;
-  let healthP2 = p2.details.health;
-  let fightLog = '';
+import { IFighter } from './fighter';
+
+function fight(p1: IFighter, p2: IFighter): {winner: IFighter, log: string} {
+  let healthP1: number = p1.details.health;
+  let healthP2: number = p2.details.health;
+  let fightLog: string = '';
 
   while (healthP1 > 0 && healthP2 > 0) {
     const punchPower1 = Math.max(0, p1.getHitPower() - p2.getBlockPower());
@@ -13,10 +15,10 @@ function fight(p1, p2) {
       fightLog += `${p2.name} 🤜 ${p1.name} with 💪 ${punchPower2}. ${p1.name} ❤️ ${healthP1} </p>`;
     }
   }
-  let result = {};
-  result.winner = healthP1 > 0 ? p1 : p2;
-  result.log = fightLog;
-  return result;
+  return {
+    winner: healthP1 > 0 ? p1 : p2,
+    log: fightLog
+  };
 }
 
 export default fight;

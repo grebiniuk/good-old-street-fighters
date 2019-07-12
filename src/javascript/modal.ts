@@ -1,24 +1,29 @@
 import View from './view';
 
 class Modal extends View {
+  formElement: HTMLFormElement;
+  fieldSet: HTMLFieldSetElement;
+  details: HTMLDivElement;
+
   constructor() {
     super();
 
     this.formElement = this.createElement({
       tagName: 'form',
-    });
+    }) as HTMLFormElement;
+
     this.fieldSet = this.createElement({
       tagName: 'fieldset',
-    });
+    }) as HTMLFieldSetElement;
     this.details = this.createElement({
       tagName: 'div',
       className: 'details',
-    });
+    }) as HTMLDivElement;
     const updateBtn = this.createElement({
       tagName: 'button',
       className: 'wide-button',
       text: 'Ok',
-    });
+    }) as HTMLButtonElement;
     updateBtn.onclick = this.onUpdate.bind(this);
     this.formElement.append(this.fieldSet, this.details, updateBtn);
 
@@ -29,12 +34,12 @@ class Modal extends View {
     const modalContent = this.createElement({
       tagName: 'div',
       className: 'modal-content',
-    });
+    }) as HTMLDivElement;
     const closeBtn = this.createElement({
       tagName: 'span',
       className: 'close',
       html: '&times;',
-    });
+    }) as HTMLSpanElement;
     modalContent.append(
         closeBtn,
         this.formElement,
@@ -58,7 +63,7 @@ class Modal extends View {
     this.element.style.visibility = 'visible';
   }
 
-  onUpdate(event) {
+  onUpdate(event: Event) {
     event.preventDefault();
     this.close();
   }

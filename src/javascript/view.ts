@@ -1,7 +1,15 @@
-class View {
-  element;
+export interface IElement {
+  tagName: string;
+  className?: string;
+  attributes?: {[key: string]: string};
+  html?: string;
+  text?: string;
+}
 
-  createElement({ tagName, className = '', attributes = {}, html = '', text = '' }) {
+class View {
+  element: HTMLElement;
+
+  createElement({ tagName, className = '', attributes = {}, html = '', text = '' }: IElement): HTMLElement {
     const element = document.createElement(tagName);
     if (className) {
       element.classList.add(className);

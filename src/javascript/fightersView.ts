@@ -2,22 +2,29 @@ import View from './view';
 import FighterView from './fighterView';
 import FighterInfoModal from './fighterInfoModal';
 import fight from './fight';
-import Fighter from './fighter';
+import Fighter, { IFighter, IFighterData } from './fighter';
 import Modal from './modal';
 
 class FightersView extends View {
-  players = [];
+  players: [IFighter?, IFighter?];
+  fighters: IFighter[];
+  handleClick: (event: Event, fighter: IFighter ) => void;
+  title: HTMLHeadingElement;
+  fightersCollection: HTMLDivElement;
+  fightButton: HTMLButtonElement;
+  fighterInfo: FighterInfoModal;
+  winnerInfo: Modal;
 
-  constructor(fighters) {
+  constructor(fighters: IFighterData[]) {
     super();
-
-    this.fighters = fighters.map(data => new Fighter(data));
+    this.players = [];
+    this.fighters = fighters.map((data: IFighterData) => new Fighter(data));
     this.handleClick = this.handleFighterClick.bind(this);
     this.createFighters();
   }
 
   createFighters() {
-    const fighterElements = this.fighters.map(fighter => {
+    const fighterElements = this.fighters.map((fighter: IFighter) => {
       const fighterView = new FighterView(fighter, this.handleClick);
       return fighterView.element;
     });
@@ -30,14 +37,15 @@ class FightersView extends View {
     this.title = this.createElement({
       tagName: 'h1',
       className: 'title',
-    });
+    }) as HTMLHeadingElement;
     this.title.innerHTML = 'Player select';
     this.element.append(this.title);
 
     this.fightersCollection = this.createElement({
       tagName: 'div',
       className: 'fighters'
-    });
+    }) as HTMLDivElement;
+
     this.fightersCollection.append(...fighterElements);
     this.fightersCollection.addEventListener('change', event => this.onFighterCheck(event),
         false);
@@ -47,15 +55,15 @@ class FightersView extends View {
       tagName: 'button',
       className: 'wide-button',
       attributes: {style: 'visibility: hidden'},
-    });
+    }) as HTMLButtonElement;
     this.fightButton.innerText = 'Start Fight';
     this.fightButton.addEventListener('click', event => this.startFight(event),
         false);
     this.element.append(this.fightButton);
   }
 
-  async handleFighterClick(event, fighter) {
-    if (event.target.parentNode.matches('label.checkbox-container')) {
+  async handleFighterClick(event: Event, fighter: IFighter) {
+    if (((event.target as HTMLElement).parentNode as HTMLElement).matches('label.checkbox-container')) {
       return;
     }
 
@@ -66,38 +74,29 @@ class FightersView extends View {
     await this.fighterInfo.showFighter(fighter);
   }
 
-  onFighterCheck(event) {
-    if (!event.target.parentNode.matches('label.checkbox-container')) {
+  onFighterCheck(event: Event) {
+    if (!((event.target as HTMLElement).parentNode as HTMLElement).matches('label.checkbox-container')) {
       return;
     }
-    let fighter = this.fighters.find(
-        fighter => fighter._id === event.target.value);
+    let fighter = this.fighters.find(fighter => String(fighter._id) === (event.target as HTMLInputElement).value);
 
     if (!fighter) {
       return;
     }
 
-    if (event.target.parentNode.firstChild.checked) {
+    if ((((event.target as HTMLElement).parentNode as HTMLElement).firstChild as HTMLInputElement).checked) {
       this.players.push(fighter);
-      /*    TODO show info about chosen players (#1 and #2).
-            const fighterLabel = document.querySelector('input[type="checkbox"][value="' + fighter._id +
-                '"]').parentNode;
-            if (this.players[0]._id === fighter._id){
-              fighterLabel.innerText = `Player: 1`;
-            } else {
-              fighterLabel.innerText = `Player: 2`;
-            }*/
-
     } else {
       let index = this.players.indexOf(fighter);
       if (index !== -1) {
         this.players.splice(index, 1);
       }
     }
+
     if (this.players.length > 2) {
       let fighter = this.players.shift();
-      document.querySelector('input[type="checkbox"][value="' + fighter._id +
-          '"]').checked = false;
+      (document.querySelector('input[type="checkbox"][value="' + String(fighter._id) +
+          '"]') as HTMLInputElement).checked = false;
     }
     if (this.players.length === 2) {
       this.fightButton.style.visibility = 'visible';
@@ -106,8 +105,8 @@ class FightersView extends View {
     }
   }
 
-  async startFight(event) {
-    if (event.target.style.visibility === 'hidden') {
+  async startFight(event: Event) {
+    if ((event.target as HTMLElement).style.visibility === 'hidden') {
       return;
     }
     await this.players[0].getDetails();

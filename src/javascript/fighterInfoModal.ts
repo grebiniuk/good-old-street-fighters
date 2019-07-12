@@ -1,34 +1,33 @@
 import Modal from './modal';
+import {IFighter, IFighterDetailsUpdate} from './fighter';
 
 class FighterInfoModal extends Modal {
-  constructor() {
-    super();
-  }
+  fighter: IFighter;
 
-  async showFighter(fighter){
+  async showFighter(fighter: IFighter){
     const fighterDetails = await fighter.getDetails();
     this.fighter = fighter;
     this.fieldSet.innerHTML = '';
     this.fieldSet.append(
         this.createName(fighterDetails.name),
-        this.createInput(fighterDetails.health, 'health'),
-        this.createInput(fighterDetails.attack, 'attack'),
-        this.createInput(fighterDetails.defense, 'defense'),
+        this.createInput(String(fighterDetails.health), 'health'),
+        this.createInput(String(fighterDetails.attack), 'attack'),
+        this.createInput(String(fighterDetails.defense), 'defense'),
     );
     this.show();
   }
 
-  createName(name) {
+  createName(name: string): HTMLSpanElement {
     const nameElement = this.createElement({
       tagName: 'span',
       className: 'name'
-    });
+    }) as HTMLSpanElement;
     nameElement.innerText = name;
 
     return nameElement;
   }
 
-  createInput(value, name) {
+  createInput(value: string, name: string) {
     const labelElement = this.createElement({
       tagName: 'label',
       className: `label-info`,
@@ -49,6 +48,7 @@ class FighterInfoModal extends Modal {
         required: 'required',
       },
     });
+
     const divElement = this.createElement({
       tagName: 'div',
       className: 'fighter-info'
@@ -56,10 +56,10 @@ class FighterInfoModal extends Modal {
     divElement.append(labelElement, inputElement);
     return divElement;
   }
-  onUpdate(event) {
+  onUpdate(event: Event) {
     let isValid = true;
     const elements = this.formElement.elements;
-    const newDetails = {};
+    const newDetails: IFighterDetailsUpdate = {};
     for (let i = 0; i < elements.length; i++) {
       if (!elements[i].matches('input[type="number"]')) {
         continue;
@@ -67,7 +67,8 @@ class FighterInfoModal extends Modal {
         isValid = false;
         break;
       }
-      newDetails[elements[i].name] = elements[i].value;
+      let input = elements[i] as HTMLInputElement;
+      newDetails[input.name as 'attack' | 'defense' | 'health'] = input.value;
     }
     if (isValid){
       event.preventDefault();
